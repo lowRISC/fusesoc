@@ -11,7 +11,7 @@ import tempfile
 from fusesoc import utils
 from fusesoc.coremanager import DependencyError
 from fusesoc.librarymanager import Library
-from fusesoc.utils import merge_dict
+from fusesoc.utils import depgraph_to_dot, merge_dict
 from fusesoc.vlnv import Vlnv
 
 logger = logging.getLogger(__name__)
@@ -82,6 +82,24 @@ class Edalizer:
         # Run all generators. Generators can create new cores, which are added
         # to the list of available cores.
         self.run_generators()
+
+        # If a work root exists for us to write it to, dump complete dependency
+        # tree as dot file
+        dot_ext = ".deps-after-generators.dot"
+        dot_basename = self.toplevel.sanitized_name + dot_ext
+        dot_filepath = os.path.join(self.work_root, dot_basename)
+        if not os.path.exists(self.work_root):
+            logger.info(
+                f"Skipped writing dependency graph to {dot_filepath} "
+                "(work root doesn't exist)"
+            )
+        else:
+            core_graph = self.core_manager.get_dependency_graph(
+                self.toplevel, self.flags
+            )
+            with open(dot_filepath, "w") as f:
+                f.write(depgraph_to_dot(core_graph))
+            logger.info(f"Wrote dependency graph to {dot_filepath}")
 
         # Create EDA API file contents
         self.create_edam()
