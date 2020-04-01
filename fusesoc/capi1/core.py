@@ -47,9 +47,10 @@ class FileSet:
 class Core:
     capi_version = 1
 
-    def __init__(self, core_file, cache_root=""):
+    def __init__(self, core_file, cache_root="", from_generator=None):
         basename = os.path.basename(core_file)
         self.core_file = core_file
+        self.from_generator = from_generator
 
         # Populated by CoreDB._solve(). TODO: Find a better solution for that.
         self.direct_deps = []

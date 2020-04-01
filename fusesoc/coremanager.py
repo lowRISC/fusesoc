@@ -189,7 +189,13 @@ class CoreManager:
         self.db = CoreDB()
         self._lm = LibraryManager(config.library_root)
 
-    def find_cores(self, library):
+    def find_cores(self, library, from_generator=None):
+        """Retrieve a list of cores from a library.
+
+        If from_generator is not None, it is the name of the generator that
+        made this library, and is passed to each Core object on construction.
+
+        """
         found_cores = []
         path = os.path.expanduser(library.location)
         if os.path.isdir(path) == False:
@@ -203,7 +209,11 @@ class CoreManager:
                 if f.endswith(".core"):
                     core_file = os.path.join(root, f)
                     try:
-                        core = Core(core_file, self.config.cache_root)
+                        core = Core(
+                            core_file,
+                            self.config.cache_root,
+                            from_generator=from_generator,
+                        )
                         found_cores.append(core)
                     except SyntaxError as e:
                         w = "Parse error. Ignoring file " + core_file + ": " + e.msg
@@ -213,13 +223,18 @@ class CoreManager:
                         logger.warning(w.format(core_file, str(e)))
         return found_cores
 
-    def _load_cores(self, library):
-        found_cores = self.find_cores(library)
+    def _load_cores(self, library, from_generator):
+        found_cores = self.find_cores(library, from_generator=from_generator)
         for core in found_cores:
             self.db.add(core, library)
 
-    def add_library(self, library):
-        """ Register a library """
+    def add_library(self, library, from_generator=None):
+        """Register a library
+
+        If from_generator is not None, it is the name of the generator that
+        made this library, and is passed to each Core object on construction.
+
+        """
         abspath = os.path.abspath(os.path.expanduser(library.location))
         _library = self._lm.get_library(abspath, "location")
         if _library:
@@ -227,7 +242,7 @@ class CoreManager:
             logger.warning(_s.format(library.name, abspath, _library.name))
             return
 
-        self._load_cores(library)
+        self._load_cores(library, from_generator)
         self._lm.add_library(library)
 
     def get_libraries(self):
