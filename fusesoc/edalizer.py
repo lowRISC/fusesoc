@@ -174,6 +174,7 @@ class Edalizer:
                         core,
                         self.generators,
                         core_list=self._core_list_for_generator(),
+                        toplevel=str(self.toplevel),
                     )
                     gen_lib = ttptttg.generate()
 
@@ -423,7 +424,7 @@ from fusesoc.utils import Launcher
 
 
 class Ttptttg:
-    def __init__(self, ttptttg, core, generators, core_list):
+    def __init__(self, ttptttg, core, generators, core_list, toplevel):
         generator_name = ttptttg["generator"]
         if not generator_name in generators:
             raise RuntimeError(
@@ -452,6 +453,7 @@ class Ttptttg:
             "parameters": parameters,
             "vlnv": vlnv_str,
             "cores": core_list,
+            "toplevel": toplevel,
         }
 
     def generate(self):
