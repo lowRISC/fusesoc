@@ -15,7 +15,6 @@ cores_root = os.path.join(tests_dir, "cores")
 
 
 def test_coregen_provider():
-
     cache_root = tempfile.mkdtemp("coregen_")
     core = Core(os.path.join(cores_root, "misc", "coregencore.core"), cache_root)
 
@@ -72,7 +71,6 @@ def test_github_provider():
 
 
 def test_logicore_provider():
-
     cache_root = tempfile.mkdtemp("logicore_")
     core = Core(os.path.join(cores_root, "misc", "logicorecore.core"), cache_root)
 

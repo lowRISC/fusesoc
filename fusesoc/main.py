@@ -135,9 +135,7 @@ def dep_graph(cm, args):
 
         # Remove the dot file if the conversion went well.
         os.unlink(dot_filepath)
-    print(
-        "Successfully written dependency graph to {}.".format(converted_output_filepath)
-    )
+    print(f"Successfully written dependency graph to {converted_output_filepath}.")
 
 
 def list_paths(cm, args):

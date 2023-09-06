@@ -17,6 +17,7 @@ setup(
     use_scm_version={
         "relative_to": __file__,
         "write_to": "fusesoc/version.py",
+        "fallback_version": "0.4.dev0",
     },
     author="Olof Kindgren",
     author_email="olof.kindgren@gmail.com",

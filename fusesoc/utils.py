@@ -185,6 +185,6 @@ def depgraph_to_dot(core_graph):
     s = "digraph dependencies {\n"
     for core, deps in core_graph.items():
         for dep in deps:
-            s += '"{}"->"{}"\n'.format(core, dep)
+            s += f'"{core}"->"{dep}"\n'
     s += "}\n"
     return s
