@@ -54,7 +54,7 @@ setup(
         "edalize>=0.2.3",
         "pyparsing",
         "pyyaml",
-        "simplesat>=0.8.0",
+        "simplesat>=0.9.1",
     ],
     # Supported Python versions: 3.6+
     python_requires=">=3.6, <4",
